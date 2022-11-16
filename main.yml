@@ -1,0 +1,9 @@
+---
+- name: Test
+  hosts: localhost
+  connection: local
+  vars:
+    input: "{{ lookup('file','cars_sample.json') | from_json }}"
+  tasks:
+    - name: Test ansible
+      include_tasks: create_appending_dict_from_var.yml

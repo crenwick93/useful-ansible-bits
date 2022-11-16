@@ -1,0 +1,19 @@
+---
+# This Ansible is useful in pulling out specific details from json output. 
+# You can see the in the cars_sample.json that we have lots of data that we may not require.
+# For this use case, we only require a the car name and Horsepower. 
+# So we create a dictionary to show that
+
+- name: Create Dictionary car name and Horsepower
+  vars:
+    car_name: "{{ car_list.Name }}"
+    car_hp: "{{ car_list.Horsepower }}"
+  set_fact:
+    car_name_hp_list: "{{ car_name_hp_list | default({}) | combine( {car_name: car_hp} ) }}"
+  loop: "{{ input }}"
+  loop_control:
+    loop_var: car_list
+
+- name: Print cars name with HP
+  debug:
+    var: car_name_hp_list
