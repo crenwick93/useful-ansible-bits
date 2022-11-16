@@ -6,14 +6,27 @@
 
 - name: Create Dictionary car name and Horsepower
   vars:
-    car_name: "{{ car_list.Name }}"
-    car_hp: "{{ car_list.Horsepower }}"
+    car_name: "{{ car_json.Name }}"
+    car_hp: "{{ car_json.Horsepower }}"
   set_fact:
-    car_name_hp_list: "{{ car_name_hp_list | default({}) | combine( {car_name: car_hp} ) }}"
+    car_name_hp_dict: "{{ car_name_hp_dict | default({}) | combine( {car_name: car_hp} ) }}"
   loop: "{{ input }}"
   loop_control:
-    loop_var: car_list
+    loop_var: car_json
 
-- name: Print cars name with HP
+- name: Print cars name with HP as dict
+  debug:
+    var: car_name_hp_dict
+
+- name: transform dict to list 
+  set_fact:
+    car_name_hp_list:  "{{ car_name_hp_dict | dict2items }}"
+
+- name: print car list  
   debug:
     var: car_name_hp_list
+
+- name: Print HP for 1 item
+  debug:
+    msg: The horse power for a {{ item.key }} is {{ item.value }}
+  loop: "{{ car_name_hp_list }}"
