@@ -26,7 +26,7 @@
   debug:
     var: car_name_hp_list
 
-- name: Print HP for 1 item
+- name: Print HP cars as strings
   debug:
     msg: The horse power for a {{ item.key }} is {{ item.value }}
   loop: "{{ car_name_hp_list }}"
