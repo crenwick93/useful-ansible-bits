@@ -20,7 +20,7 @@
 
 - name: transform dict to list 
   set_fact:
-    car_name_hp_list:  "{{ car_name_hp_dict | dict2items }}"
+    car_name_hp_list:  "{{ car_name_hp_dict | dict2items(key_name='name', value_name='HP') }}"
 
 - name: print car list  
   debug:
@@ -28,5 +28,5 @@
 
 - name: Print HP cars as strings
   debug:
-    msg: The horse power for a {{ item.key }} is {{ item.value }}
+    msg: The horse power for a {{ item.name }} is {{ item.HP}}
   loop: "{{ car_name_hp_list }}"

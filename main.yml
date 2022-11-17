@@ -2,6 +2,7 @@
 - name: Test
   hosts: localhost
   connection: local
+  gather_facts: false
   vars:
     input: "{{ lookup('file','cars_sample.json') | from_json }}"
   tasks:
