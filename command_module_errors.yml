@@ -1,0 +1,25 @@
+---
+- name: Add extra VPC accociation VPC to zone
+  vars:
+    zone_id: example-zone-id
+    region: exmaple-region
+    vpc_id: example-id
+    vpc_region: eu-west-2
+    example_list:
+      - vpc-7
+      - vpc-8
+  command: 
+    cmd: aws route53 associate-vpc-with-hosted-zone --hosted-zone-id={{ zone_id }} --vpc VPCRegion={{vpc_region}},VPCId={{ vpc_id }} --region {{ region }}
+  # Also skips the first element in the given list
+  when: (example_list | length > 1) and (my_idx != 0)
+  loop: "{{ example_list }}"
+  loop_control:
+     index_var: my_idx 
+  register: r53_hosted_zone
+  ignore_errors: true
+  # Changed (yellow) when return code is 0 (i.e the accociation has been made)
+  changed_when: r53_hosted_zone.rc == 0
+  # When the accociation has previously already been made, it will fail unless you catch the return code
+  failed_when: 
+    - r53_hosted_zone.rc != 254
+    - r53_hosted_zone.rc != 0

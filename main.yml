@@ -9,4 +9,7 @@
     - name: Test ansible
       include_tasks: create_appending_dict_from_var.yml
 
+    - name: using the command module and handlin errors in AWS cli
+      include_tasks: command_module_errors.yml
+
     
